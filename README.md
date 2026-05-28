@@ -4,7 +4,7 @@ A full-stack AI-driven debugging workspace that executes Python code in a secure
 Overview
 
 This application is a full stack debugging workspace that executes Python code in a safe sandbox environment and utilizes high speed AI to diagnose runtime crashes instantly.
-
+You can access the live interactive application here: https://ai-code-debugger-1-dnqb.onrender.com/
 How The Frontend Works
 
 • You write or paste your Python code directly into a modern code editor panel built with CodeMirror.
