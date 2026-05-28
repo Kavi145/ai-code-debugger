@@ -1,0 +1,165 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    background-color: #1e1e24;
+    color: #f8f8f2;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Lock viewport screen from scrolling globally */
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+.main-header {
+    background-color: #0f0f12;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    height: 60px;
+    border-bottom: 2px solid #343442;
+    flex-shrink: 0; /* Stop header component from shrinking */
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.logo span {
+    color: #50fa7b;
+}
+
+.action-btn {
+    background-color: #50fa7b;
+    color: #1e1e24;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #40c963;
+}
+
+.workspace {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 60px);
+    overflow: hidden; /* Lock the dashboard frame workspace elements layout */
+}
+
+.pane {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-pane {
+    border-right: 2px solid #343442;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Force CodeMirror to fill left section entirely and manage its own scroll internals */
+.CodeMirror {
+    height: 100% !important;
+    font-size: 14px;
+    flex: 1;
+}
+
+.console-pane {
+    background-color: #15151a;
+    padding: 20px;
+    overflow-y: auto; /* Activates vertical scrolling instantly when AI panel fills screen */
+}
+
+.panel-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6272a4;
+    margin-bottom: 10px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.console-box {
+    font-family: 'Courier New', Courier, monospace;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    flex-shrink: 0;
+}
+
+.system-idle { background-color: #282a36; color: #f8f8f2; border: 1px solid #44475a; }
+.success { background-color: #1b2b24; color: #50fa7b; border: 1px solid #50fa7b; }
+.error { background-color: #2b1b1b; color: #ff5555; border: 1px solid #ff5555; }
+
+.ai-card {
+    background-color: #282a36;
+    border-left: 4px solid #8be9fd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.3s ease-in-out;
+    flex-shrink: 0;
+}
+
+.ai-card-header {
+    background-color: #21222c;
+    padding: 10px 15px;
+    font-weight: bold;
+    color: #8be9fd;
+    border-bottom: 1px solid #44475a;
+}
+
+.ai-card-content {
+    padding: 15px;
+}
+
+.ai-card-content h5 {
+    color: #ffb86c;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.ai-card-content p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: #f1fa8c;
+}
+
+.ai-card-content pre {
+    background-color: #191a21;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    color: #f8f8f2;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+}
+
+.hidden { display: none !important; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

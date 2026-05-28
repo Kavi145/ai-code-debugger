@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Debugger Workspace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/dracula.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo">⚡ <span>AI Code Debugger</span> Workspace</div>
+            <button id="run-btn" class="action-btn">Run & Debug Engine</button>
+        </header>
+
+        <main class="workspace">
+            <section class="pane editor-pane">
+                <textarea id="code-editor"># Try writing broken code to trigger the AI Diagnostic feedback loops!
+def calculate_metrics():
+    items = [10, 20, 30]
+    # Triggering an intentional IndexError for demonstration:
+    print(items[5])
+
+calculate_metrics()</textarea>
+            </section>
+
+            <section class="pane console-pane">
+                <div class="panel-title">Execution Console Output</div>
+                <div id="console-output" class="console-box system-idle">
+                    Click "Run & Debug Engine" to process your workspace script...
+                </div>
+
+                <div id="ai-card" class="ai-card hidden">
+                    <div class="ai-card-header">🤖 NLP AI Diagnostic Assistance</div>
+                    <div class="ai-card-content">
+                        <h5>Root Cause Analysis:</h5>
+                        <p id="ai-explanation"></p>
+                        
+                        <h5>Recommended Code Rectification:</h5>
+                        <pre><code id="ai-suggestion"></code></pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/python/python.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
