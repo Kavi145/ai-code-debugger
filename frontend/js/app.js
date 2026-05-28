@@ -8,8 +8,7 @@ const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
 });
 
 // Update this link with your live public Render/Railway URL once deployed
-const BACKEND_API_ENDPOINT = "http://localhost:8000/execute";
-
+const BACKEND_API_ENDPOINT = "https://ai-code-debugger-h9xp.onrender.com/execute";
 document.getElementById("run-btn").addEventListener("click", async () => {
     const userCode = editor.getValue();
     const consoleOutput = document.getElementById("console-output");
