@@ -10,7 +10,6 @@ from app.services.ai_analyzer import analyze_error_with_ai
 
 app = FastAPI(title="AI Python Debugger Engine API")
 
-# Essential Middleware allowing browser clients to query public API routes
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,34 +18,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Resolve paths for frontend static files based on container layout
+# Search multiple potential locations for the frontend folder
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.abspath(os.path.join(BASE_DIR, "../frontend"))
+possible_frontend_paths = [
+    os.path.abspath(os.path.join(BASE_DIR, "../frontend")),
+    os.path.abspath(os.path.join(BASE_DIR, "frontend")),
+    "/app/frontend"
+]
 
-if os.path.exists(FRONTEND_DIR):
+FRONTEND_DIR = None
+for path in possible_frontend_paths:
+    if os.path.exists(path):
+        FRONTEND_DIR = path
+        break
+
+if FRONTEND_DIR:
     app.mount("/css", StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")), name="css")
     app.mount("/js", StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")), name="js")
 
 @app.get("/")
 def serve_frontend():
-    index_path = os.path.join(FRONTEND_DIR, "index.html")
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
-    return {"message": "AI Python Debugger Engine API is running."}
+    if FRONTEND_DIR:
+        index_path = os.path.join(FRONTEND_DIR, "index.html")
+        if os.path.exists(index_path):
+            return FileResponse(index_path)
+    return {"message": "Frontend directory not found by backend container."}
 
 @app.post("/execute", response_model=CodeExecutionResponse)
 def run_and_debug_code(request: CodeExecutionRequest):
-    # Step 1: Process the script inside the sandbox environment
     result = execute_python_code(request.code)
     
-    # Step 2: Immediate return mapping for successful executions
     if result["success"]:
         return CodeExecutionResponse(
             success=True,
             output=result["output"]
         )
         
-    # Step 3: Call the AI Engine if an error is caught
     ai_insights = analyze_error_with_ai(
         code=request.code, 
         error_msg=result["raw_error"], 
