@@ -1,36 +1,28 @@
-from groq import Groq
+from google import genai
 import os
 import json
 from dotenv import load_dotenv
 
 load_dotenv()
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Initialize the Groq client securely
-client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
+# Initialize the Gemini client securely
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 
 def analyze_error_with_ai(code: str, error_msg: str, error_type: str) -> dict:
     """
-    Leverages Groq's high-speed Llama-3.1 model to analyze and fix sandboxed execution errors.
+    Leverages Gemini's high-speed model to analyze and fix sandboxed execution errors.
     """
-    if not GROQ_API_KEY or not client:
+    if not GEMINI_API_KEY or not client:
         return {
-            "explanation": "AI Debugging helper is offline because the GROQ_API_KEY is unconfigured.",
+            "explanation": "AI Debugging helper is offline because the GEMINI_API_KEY is unconfigured.",
             "suggestion": "Review your code syntax structural loops locally."
         }
 
     try:
-        # Utilizing llama-3.1-8b-instant (Optimized for lightning-fast structural text responses)
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are an advanced software engineer and computer science tutor. Your task is to diagnose code execution errors and return response packages strictly in structured JSON format."
-                },
-                {
-                    "role": "user",
-                    "content": f"""
+        prompt = f"""
+You are an advanced software engineer and computer science tutor. Your task is to diagnose code execution errors and return response packages strictly in structured JSON format.
+
 The student's code failed with an explicit error type of: {error_type}.
 
 --- RAW CODE WORKSPACE ---
@@ -45,12 +37,16 @@ Provide your analysis response in exactly this strict JSON format structure:
     "suggestion": "Show the corrected line or block of code with an explanation of what was changed."
 }}
 """
-                }
-            ],
-            response_format={"type": "json_object"} # Forces Groq to output clean, parseable JSON
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json"
+            }
         )
         
-        return json.loads(response.choices[0].message.content)
+        return json.loads(response.text)
         
     except Exception as e:
         return {
